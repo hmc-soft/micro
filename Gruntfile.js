@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'source/<%= pkg.name %>.js',
+        src: 'bin/built.js',
         dest: 'bin/<%= pkg.name %>.min.js'
       }
     },
@@ -22,15 +22,26 @@ module.exports = function(grunt) {
 				destination: 'docs'
 			}
 		}
-	}
+	},
+  concat: {
+    dist: {
+      src: ['source/**/*.js'],
+      dest: 'bin/built.js',
+    }
+  },
+  clean: {
+    js: ["bin/*.js", "!bin/*.min.js"]
+  }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-jsdoc');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint','uglify','jsdoc']);
+  grunt.registerTask('default', ['jshint','concat','uglify','clean','jsdoc']);
 
 };
